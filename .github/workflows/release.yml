@@ -17,21 +17,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: Setup node
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
           registry-url: https://registry.npmjs.org
           always-auth: true
-      - name: Load cached dist
-        uses: actions/cache@v4
-        id: dist
-        with:
-          path: dist
-          key: dist-${{ hashFiles('src/**/*.ts', 'tsconfig/*.json', '.github/workflows/*.yml', 'package-lock.json') }}
-          fail-on-cache-miss: true
+      - run: npm i && npm run build
       - name: Prepare distribution
         run: node tools/publish.cjs
       - run: npm publish --provenance
