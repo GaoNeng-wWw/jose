@@ -38,41 +38,9 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-  jsr:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - run: npx jsr publish
-
-  cleanup:
-    needs:
-      - npm
-      - jsr
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - run: git push origin $GITHUB_SHA:v6.x
-      - run: git rm -r dist
-      - run: |
-          git config --local user.name "github-actions[bot]"
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "chore: cleanup after release"
-      - run: git push origin HEAD:main
-
   github:
     needs:
       - npm
-      - jsr
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
