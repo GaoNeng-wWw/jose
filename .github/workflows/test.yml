@@ -42,7 +42,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
           check-latest: true
-      - run: npm clean-install
+      - run: npm install
       - name: Run Test Suite
         run: npm run ${{ matrix.suite }}
 
@@ -59,7 +59,7 @@ jobs:
         with:
           node-version: lts/*
           cache: 'npm'
-      - run: npm clean-install
+      - run: npm install
       - name: Test Deno Definitions
         run: |
           npm run build:deno
@@ -80,7 +80,7 @@ jobs:
         with:
           node-version: lts/*
           cache: 'npm'
-      - run: npm clean-install
+      - run: npm install
       - name: Test Bun
         run: npm run tap:bun
 
@@ -94,7 +94,7 @@ jobs:
         with:
           node-version: lts/*
           cache: 'npm'
-      - run: npm clean-install
+      - run: npm install
       - run: npm install --global workerd
       - run: npm link workerd
       - name: Run Test Suite
@@ -110,9 +110,7 @@ jobs:
         with:
           node-version: lts/*
           cache: 'npm'
-      - run: npm clean-install
-      - run: npm install --global edge-runtime
-      - run: npm link edge-runtime
+      - run: npm install
       - name: Run Test Suite
         run: npm run tap:edge-runtime
 
@@ -136,7 +134,7 @@ jobs:
         with:
           node-version: lts/*
           cache: 'npm'
-      - run: npm clean-install
+      - run: npm install
       - run: npm install --global testcafe@3
       - name: Add rows to the TCC.db
         if: ${{ matrix.runs-on == 'macos-15' }}
@@ -158,7 +156,7 @@ jobs:
         with:
           node-version: lts/*
           cache: 'npm'
-      - run: npm clean-install
+      - run: npm install
       - name: Install Electron
         run: npm install --global electron
       - name: Run Test Suite

@@ -53,8 +53,8 @@
     "workers",
     "x509"
   ],
-  "homepage": "https://github.com/panva/jose",
-  "repository": "panva/jose",
+  "homepage": "https://github.com/GaoNeng-wWw/jose",
+  "repository": "https://github.com/GaoNeng-wWw/jose",
   "funding": {
     "url": "https://github.com/sponsors/panva"
   },
@@ -97,9 +97,9 @@
     "build:bundle-min": "esbuild --minify --bundle dist/index.js --format=esm --target=es2022 --outfile=dist/index.bundle.min.js",
     "build:umd": "rollup dist/index.bundle.js --format umd --name jose -o dist/index.umd.js && rollup dist/index.bundle.min.js --compact --format umd --name jose -o dist/index.umd.min.js",
     "build:deno": "mkdir -p dist/deno && cp -R src/. dist/deno && find dist/deno -name '*.ts' -type f -print0 | xargs -0 sed -i.bak -e \"s/\\.js'/.ts'/g\" && npm run sedcleanup",
-    "build:types": "npm run build -- -p ./tsconfig/types.json && cd src && find . -name '*.d.ts' -maxdepth 2 -type f -exec rsync -R \"{}\" ../dist/types  \\;",
+    "build:types": "npm run build -- -p ./tsconfig/types.json && cd src && find . -name '*.d.ts' -maxdepth 2 -type f -exec rsync -R \"{}\" ../dist/webapi  \\;",
     "build:jsr": "npx --yes jsr publish --dry-run --allow-dirty",
-    "clear": "rm -Rf dist",
+    "clear": "rimraf dist",
     "sedcleanup": "find . -name '*.bak' -type f -print0 | xargs -0 rm -f",
     "docs:generate": "typedoc",
     "types:find": "find dist/types -name '*.d.ts' -type f -print0",

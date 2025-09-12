@@ -1,4 +1,6 @@
-# jose
+# @gaoneng-www/jose
+
+base on [jose](https://github.com/panva/jose). Just add cjs support.
 
 `jose` is JavaScript module for JSON Object Signing and Encryption, providing support for JSON Web Tokens (JWT), JSON Web Signature (JWS), JSON Web Encryption (JWE), JSON Web Key (JWK), JSON Web Key Set (JWKS), and more. The module is designed to work across various Web-interoperable runtimes including Node.js, browsers, Cloudflare Workers, Deno, Bun, and others.
 
