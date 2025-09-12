@@ -12,7 +12,7 @@ import {
   JWKSNoMatchingKey,
   JWKSMultipleMatchingKeys,
 } from '../util/errors.js'
-import isObject from '../lib/is_object.js'
+import { isObject } from '../lib/is_object.js'
 
 function getKtyFromAlg(alg: unknown) {
   switch (typeof alg === 'string' && alg.slice(0, 2)) {
@@ -23,6 +23,8 @@ function getKtyFromAlg(alg: unknown) {
       return 'EC'
     case 'Ed':
       return 'OKP'
+    case 'ML':
+      return 'AKP'
     default:
       throw new JOSENotSupported('Unsupported "alg" value for a JSON Web Key Set')
   }
@@ -81,7 +83,7 @@ class LocalJWKSet {
       }
 
       // filter keys based on the key's declared Algorithm
-      if (candidate && typeof jwk.alg === 'string') {
+      if (candidate && (typeof jwk.alg === 'string' || kty === 'AKP')) {
         candidate = alg === jwk.alg
       }
 
@@ -169,8 +171,9 @@ async function importWithAlgCache(cache: WeakMap<types.JWK, Cache>, jwk: types.J
  * multiple keys get matched it is possible to opt-in to iterate over the matched keys and attempt
  * verification in an iterative manner.
  *
- * Note: The function's purpose is to resolve public keys used for verifying signatures and will not
- * work for public encryption keys.
+ * > [!NOTE]\
+ * > The function's purpose is to resolve public keys used for verifying signatures and will not work
+ * > for public encryption keys.
  *
  * This function is exported (as a named export) from the main `'jose'` module entry point as well
  * as from its subpath export `'jose/jwks/local'`.

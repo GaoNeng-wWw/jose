@@ -6,9 +6,10 @@ Support from the community to continue maintaining and improving this module is 
 
 • `const` **jwksCache**: unique `symbol`
 
-DANGER ZONE - This option has security implications that must be understood, assessed for
-applicability, and accepted before use. It is critical that the JSON Web Key Set cache only be
-writable by your own code.
+> [!WARNING]\
+> This option has security implications that must be understood, assessed for applicability, and
+> accepted before use. It is critical that the JSON Web Key Set cache only be writable by your own
+> code.
 
 This option is intended for cloud computing runtimes that cannot keep an in memory cache between
 their code's invocations. Use in runtimes where an in memory cache between requests is available
@@ -28,7 +29,7 @@ The intended use pattern is:
   previously cached object from a low-latency key-value store offered by the cloud computing
   runtime it is executed on;
 - Default to an empty object `{}` instead when there's no previously cached value;
-- Pass it in as [[jwksCache]](../interfaces/RemoteJWKSetOptions.md);
+- Pass it in as [\[jwksCache\]](../interfaces/RemoteJWKSetOptions.md);
 - Afterwards, update the key-value storage if the [`uat`](../interfaces/ExportedJWKSCache.md#uat) property of
   the object has changed.
 

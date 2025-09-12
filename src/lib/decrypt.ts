@@ -1,11 +1,11 @@
 import { concat, uint64be } from './buffer_utils.js'
 
 import type * as types from '../types.d.ts'
-import checkIvLength from './check_iv_length.js'
-import checkCekLength from './check_cek_length.js'
+import { checkIvLength } from './check_iv_length.js'
+import { checkCekLength } from './check_cek_length.js'
 import { JOSENotSupported, JWEDecryptionFailed, JWEInvalid } from '../util/errors.js'
 import { checkEncCryptoKey } from './crypto_key.js'
-import invalidKeyInput from './invalid_key_input.js'
+import { invalidKeyInput } from './invalid_key_input.js'
 import { isCryptoKey } from './is_key_like.js'
 
 async function timingSafeEqual(a: Uint8Array, b: Uint8Array): Promise<boolean> {
@@ -19,8 +19,12 @@ async function timingSafeEqual(a: Uint8Array, b: Uint8Array): Promise<boolean> {
   const algorithm = { name: 'HMAC', hash: 'SHA-256' }
   const key = (await crypto.subtle.generateKey(algorithm, false, ['sign'])) as CryptoKey
 
-  const aHmac = new Uint8Array(await crypto.subtle.sign(algorithm, key, a))
-  const bHmac = new Uint8Array(await crypto.subtle.sign(algorithm, key, b))
+  const aHmac = new Uint8Array(
+    await crypto.subtle.sign(algorithm, key, a as Uint8Array<ArrayBuffer>),
+  )
+  const bHmac = new Uint8Array(
+    await crypto.subtle.sign(algorithm, key, b as Uint8Array<ArrayBuffer>),
+  )
 
   let out = 0
   let i = -1
@@ -45,14 +49,14 @@ async function cbcDecrypt(
   const keySize = parseInt(enc.slice(1, 4), 10)
   const encKey = await crypto.subtle.importKey(
     'raw',
-    cek.subarray(keySize >> 3),
+    cek.subarray(keySize >> 3) as Uint8Array<ArrayBuffer>,
     'AES-CBC',
     false,
     ['decrypt'],
   )
   const macKey = await crypto.subtle.importKey(
     'raw',
-    cek.subarray(0, keySize >> 3),
+    cek.subarray(0, keySize >> 3) as Uint8Array<ArrayBuffer>,
     {
       hash: `SHA-${keySize << 1}`,
       name: 'HMAC',
@@ -63,7 +67,10 @@ async function cbcDecrypt(
 
   const macData = concat(aad, iv, ciphertext, uint64be(aad.length << 3))
   const expectedTag = new Uint8Array(
-    (await crypto.subtle.sign('HMAC', macKey, macData)).slice(0, keySize >> 3),
+    (await crypto.subtle.sign('HMAC', macKey, macData as Uint8Array<ArrayBuffer>)).slice(
+      0,
+      keySize >> 3,
+    ),
   )
 
   let macCheckPassed!: boolean
@@ -79,7 +86,11 @@ async function cbcDecrypt(
   let plaintext!: Uint8Array
   try {
     plaintext = new Uint8Array(
-      await crypto.subtle.decrypt({ iv, name: 'AES-CBC' }, encKey, ciphertext),
+      await crypto.subtle.decrypt(
+        { iv: iv as Uint8Array<ArrayBuffer>, name: 'AES-CBC' },
+        encKey,
+        ciphertext as Uint8Array<ArrayBuffer>,
+      ),
     )
   } catch {
     //
@@ -101,7 +112,13 @@ async function gcmDecrypt(
 ) {
   let encKey: types.CryptoKey
   if (cek instanceof Uint8Array) {
-    encKey = await crypto.subtle.importKey('raw', cek, 'AES-GCM', false, ['decrypt'])
+    encKey = await crypto.subtle.importKey(
+      'raw',
+      cek as Uint8Array<ArrayBuffer>,
+      'AES-GCM',
+      false,
+      ['decrypt'],
+    )
   } else {
     checkEncCryptoKey(cek, enc, 'decrypt')
     encKey = cek
@@ -111,13 +128,13 @@ async function gcmDecrypt(
     return new Uint8Array(
       await crypto.subtle.decrypt(
         {
-          additionalData: aad,
-          iv,
+          additionalData: aad as Uint8Array<ArrayBuffer>,
+          iv: iv as Uint8Array<ArrayBuffer>,
           name: 'AES-GCM',
           tagLength: 128,
         },
         encKey,
-        concat(ciphertext, tag),
+        concat(ciphertext, tag) as Uint8Array<ArrayBuffer>,
       ),
     )
   } catch {
@@ -125,14 +142,14 @@ async function gcmDecrypt(
   }
 }
 
-export default async (
+export async function decrypt(
   enc: string,
   cek: unknown,
   ciphertext: Uint8Array,
   iv: Uint8Array | undefined,
   tag: Uint8Array | undefined,
   aad: Uint8Array,
-): Promise<Uint8Array> => {
+): Promise<Uint8Array> {
   if (!isCryptoKey(cek) && !(cek instanceof Uint8Array)) {
     throw new TypeError(
       invalidKeyInput(cek, 'CryptoKey', 'KeyObject', 'Uint8Array', 'JSON Web Key'),

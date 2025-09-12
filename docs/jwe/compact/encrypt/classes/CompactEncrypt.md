@@ -23,11 +23,11 @@ console.log(jwe)
 
 ## Constructors
 
-### new CompactEncrypt()
+### Constructor
 
-▸ **new CompactEncrypt**(`plaintext`): [`CompactEncrypt`](CompactEncrypt.md)
+▸ **new CompactEncrypt**(`plaintext`): `CompactEncrypt`
 
-[CompactEncrypt](CompactEncrypt.md) constructor
+CompactEncrypt constructor
 
 #### Parameters
 
@@ -37,13 +37,13 @@ console.log(jwe)
 
 #### Returns
 
-[`CompactEncrypt`](CompactEncrypt.md)
+`CompactEncrypt`
 
 ## Methods
 
 ### encrypt()
 
-▸ **encrypt**(`key`, `options`?): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)\<`string`\>
+▸ **encrypt**(`key`, `options?`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)\<`string`\>
 
 Encrypts and resolves the value of the Compact JWE string.
 
@@ -52,7 +52,7 @@ Encrypts and resolves the value of the Compact JWE string.
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `key` | [`Uint8Array`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) \| [`CryptoKey`](https://developer.mozilla.org/docs/Web/API/CryptoKey) \| [`JWK`](../../../../types/interfaces/JWK.md) \| [`KeyObject`](../../../../types/interfaces/KeyObject.md) | Public Key or Secret to encrypt the JWE with. See [Algorithm Key Requirements](https://github.com/panva/jose/issues/210#jwe-alg). |
-| `options`? | [`EncryptOptions`](../../../../types/interfaces/EncryptOptions.md) | JWE Encryption options. |
+| `options?` | [`EncryptOptions`](../../../../types/interfaces/EncryptOptions.md) | JWE Encryption options. |
 
 #### Returns
 
@@ -112,9 +112,10 @@ You should not use this method. It is only really intended for test and vector
 
 ▸ **setKeyManagementParameters**(`parameters`): `this`
 
-Sets the JWE Key Management parameters to be used when encrypting the Content Encryption Key.
-You do not need to invoke this method, it is only really intended for test and vector
-validation purposes.
+Sets the JWE Key Management parameters to be used when encrypting. Use of this is method is
+really only needed for ECDH based algorithms when utilizing the Agreement PartyUInfo or
+Agreement PartyVInfo parameters. Other parameters will always be randomly generated when needed
+and missing.
 
 #### Parameters
 

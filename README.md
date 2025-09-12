@@ -112,7 +112,6 @@ The following runtimes are supported _(this is not an exhaustive list)_:
 - [Deno](https://github.com/panva/jose/issues/266)
 - [Electron](https://github.com/panva/jose/issues/264)
 - [Node.js](https://github.com/panva/jose/issues/262)
-- [Vercel's Edge Runtime](https://github.com/panva/jose/issues/301)
 
 Please note that certain algorithms may not be available depending on the runtime used. You can find a list of available algorithms for each runtime in the specific issue links provided above.
 
@@ -120,10 +119,10 @@ Please note that certain algorithms may not be available depending on the runtim
 
 | Version                                         | Security Fixes 🔑 | Other Bug Fixes 🐞 | New Features ⭐ | Runtime and Module type         |
 | ----------------------------------------------- | ----------------- | ------------------ | --------------- | ------------------------------- |
-| [v6.x](https://github.com/panva/jose/tree/v6.x) | ✅                | ✅                 | ✅              | Universal[^universal] ESM[^cjs] |
-| [v5.x](https://github.com/panva/jose/tree/v5.x) | ✅                | ❌                 | ❌              | Universal[^universal] CJS + ESM |
-| [v4.x](https://github.com/panva/jose/tree/v4.x) | ✅                | ❌                 | ❌              | Universal[^universal] CJS + ESM |
-| [v2.x](https://github.com/panva/jose/tree/v2.x) | ✅                | ❌                 | ❌              | Node.js CJS                     |
+| [v6.x](https://github.com/panva/jose/tree/v6.x) | [Security Policy] | ✅                 | ✅              | Universal[^universal] ESM[^cjs] |
+| [v5.x](https://github.com/panva/jose/tree/v5.x) | [Security Policy] | ❌                 | ❌              | Universal[^universal] CJS + ESM |
+| [v4.x](https://github.com/panva/jose/tree/v4.x) | [Security Policy] | ❌                 | ❌              | Universal[^universal] CJS + ESM |
+| [v2.x](https://github.com/panva/jose/tree/v2.x) | [Security Policy] | ❌                 | ❌              | Node.js CJS                     |
 
 ## Specifications
 
@@ -147,7 +146,8 @@ The algorithm implementations in `jose` have been tested using test vectors from
 [sponsor-auth0]: https://a0.to/signup/panva
 [WebCryptoAPI]: https://w3c.github.io/webcrypto/
 [Fetch API]: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
+[Security Policy]: https://github.com/panva/jose/security/policy
 
-[^cjs]: CJS style `let jose = require('jose')` is possible in Node.js versions where `process.features.require_module` is `true` by default (^20.19.0 || ^22.12.0 || >= 23.0.0) or with the `--experimental-require-module` Node.js CLI flag.
+[^cjs]: CJS style `let jose = require('jose')` is possible in Node.js versions where the `require(esm)` feature is enabled by default (^20.19.0 || ^22.12.0 || >= 23.0.0).
 
 [^universal]: Assumes runtime support of [WebCryptoAPI][] and [Fetch API][]

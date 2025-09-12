@@ -1,9 +1,9 @@
 import { withAlg as invalidKeyInput } from './invalid_key_input.js'
-import isKeyLike from './is_key_like.js'
+import { isKeyLike } from './is_key_like.js'
 import * as jwk from './is_jwk.js'
 import type * as types from '../types.d.ts'
 
-// @ts-expect-error
+// @ts-ignore
 const tag = (key: unknown): string => key?.[Symbol.toStringTag]
 
 const jwkMatchesOp = (alg: string, key: types.JWK, usage: Usage) => {
@@ -122,8 +122,6 @@ const asymmetricTypeCheck = (alg: string, key: unknown, usage: Usage) => {
         throw new TypeError(
           `${tag(key)} instances for asymmetric algorithm decryption must be of type "private"`,
         )
-      default:
-        break
     }
   }
 
@@ -137,25 +135,22 @@ const asymmetricTypeCheck = (alg: string, key: unknown, usage: Usage) => {
         throw new TypeError(
           `${tag(key)} instances for asymmetric algorithm encryption must be of type "public"`,
         )
-      default:
-        break
     }
   }
 }
 
 type Usage = 'sign' | 'verify' | 'encrypt' | 'decrypt'
 
-export default (alg: string, key: unknown, usage: Usage): void => {
-  const symmetric =
-    alg.startsWith('HS') ||
-    alg === 'dir' ||
-    alg.startsWith('PBES2') ||
-    /^A(?:128|192|256)(?:GCM)?(?:KW)?$/.test(alg) ||
-    /^A(?:128|192|256)CBC-HS(?:256|384|512)$/.test(alg)
-
-  if (symmetric) {
-    symmetricTypeCheck(alg, key, usage)
-  } else {
-    asymmetricTypeCheck(alg, key, usage)
+export function checkKeyType(alg: string, key: unknown, usage: Usage): void {
+  switch (alg.substring(0, 2)) {
+    case 'A1': // A128.+, A192.+
+    case 'A2': // A256.+
+    case 'di': // dir
+    case 'HS': // HS\d{3}
+    case 'PB': // PBES2.+
+      symmetricTypeCheck(alg, key, usage)
+      break
+    default:
+      asymmetricTypeCheck(alg, key, usage)
   }
 }

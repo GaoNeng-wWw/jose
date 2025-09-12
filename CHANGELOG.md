@@ -2,6 +2,53 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.1.0](https://github.com/panva/jose/compare/v6.0.13...v6.1.0) (2025-08-27)
+
+
+### Features
+
+* support AKP JWKs in calculateJwkThumbprint and calculateJwkThumbprintUri ([cf2092a](https://github.com/panva/jose/commit/cf2092a2b51c9fb67049e96ee22d551ad34c0b2c))
+* support for the ML-DSA PQC Algorithm Identifiers ([25ddce4](https://github.com/panva/jose/commit/25ddce491ba3968e8802db5913e49a52224246be))
+
+## [6.0.13](https://github.com/panva/jose/compare/v6.0.12...v6.0.13) (2025-08-21)
+
+
+### Refactor
+
+* more readability in ecdhes.ts ([84da9de](https://github.com/panva/jose/commit/84da9decd8b2f266a343a507b6b79197f2da11e8))
+* update asn1.ts helpers ([b4f8fb3](https://github.com/panva/jose/commit/b4f8fb372689b5b38074aa45c9921a6a997a9142))
+
+## [6.0.12](https://github.com/panva/jose/compare/v6.0.11...v6.0.12) (2025-07-15)
+
+
+### Documentation
+
+* add known caveats to customFetch ([02e1f1e](https://github.com/panva/jose/commit/02e1f1e87c764885121590aa2af80c831a9320ab))
+* mention the apu/apv parameter names in setKeyManagementParameters ([6274d5a](https://github.com/panva/jose/commit/6274d5abca3d3882d3d722415f064fee5c44d0e4))
+* update compact setKeyManagementParameters ([2f44381](https://github.com/panva/jose/commit/2f44381b6b0e30cf538ea2edb0d42b76a61de1f8))
+* use GitHub Flavored Markdown for notes and warnings ([f6b4ffc](https://github.com/panva/jose/commit/f6b4ffcd82d9645d9b818ece09a09b5a636b69c9))
+
+
+### Refactor
+
+* createPublicKey is not a constructor ([61ded78](https://github.com/panva/jose/commit/61ded787150c6ae13eeb65b6680f857d6657465f))
+* update asn1.ts helper functions ([b2b611c](https://github.com/panva/jose/commit/b2b611c426eeed3c40c3a1423d8a02dd46f3f7e8))
+
+## [6.0.11](https://github.com/panva/jose/compare/v6.0.10...v6.0.11) (2025-05-05)
+
+
+### Fixes
+
+* typ checking edge-cases when it contains a slash (/) character ([31e4baf](https://github.com/panva/jose/commit/31e4bafc0a908cac044bbe34c7024f4eac9c974f))
+
+## [6.0.10](https://github.com/panva/jose/compare/v6.0.9...v6.0.10) (2025-03-12)
+
+
+### Refactor
+
+* removed unused claims methods ([74719cf](https://github.com/panva/jose/commit/74719cfcfba1920b87740245da08bb70b68e7cd1))
+* reorganize jwt claim set utils ([1f12d88](https://github.com/panva/jose/commit/1f12d88ee8cfa328126934a7020396f9a8dd8932))
+
 ## [6.0.9](https://github.com/panva/jose/compare/v6.0.8...v6.0.9) (2025-03-11)
 
 

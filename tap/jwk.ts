@@ -11,76 +11,58 @@ export default (
   const { module, test } = QUnit
   module('jwk.ts')
 
-  type Vector = [string, JsonWebKey, boolean | [boolean, boolean]]
+  type Vector = [string, JsonWebKey]
 
   const algorithms: Vector[] = [
-    ['ECDH-ES', KEYS.P256.jwk, true],
-    ['ECDH-ES', KEYS.P384.jwk, true],
-    ['ECDH-ES', KEYS.P521.jwk, env.isDeno ? [true, false] : true],
-    [
-      'ECDH-ES',
-      KEYS.X25519.jwk,
-      env.isNode ||
-        env.isDeno ||
-        env.isElectron ||
-        env.isWorkerd ||
-        env.isEdgeRuntime ||
-        (env.isGecko && env.isBrowserVersionAtLeast(130)) ||
-        (env.isBlink && env.isBrowserVersionAtLeast(133)),
-    ],
-    ['Ed25519', KEYS.Ed25519.jwk, !env.isBlink],
-    ['EdDSA', KEYS.Ed25519.jwk, !env.isBlink],
-    ['ES256', KEYS.P256.jwk, true],
-    ['ES384', KEYS.P384.jwk, true],
-    ['ES512', KEYS.P521.jwk, env.isDeno ? [true, false] : true],
-    ['PS256', KEYS.RSA.jwk, true],
-    ['PS384', KEYS.RSA.jwk, true],
-    ['PS512', KEYS.RSA.jwk, true],
-    ['RS256', KEYS.RSA.jwk, true],
-    ['RS384', KEYS.RSA.jwk, true],
-    ['RS512', KEYS.RSA.jwk, true],
-    ['RSA-OAEP-256', KEYS.RSA.jwk, true],
-    ['RSA-OAEP-384', KEYS.RSA.jwk, true],
-    ['RSA-OAEP-512', KEYS.RSA.jwk, true],
-    ['RSA-OAEP', KEYS.RSA.jwk, true],
+    ['ECDH-ES', KEYS.P256.jwk],
+    ['ECDH-ES', KEYS.P384.jwk],
+    ['ECDH-ES', KEYS.P521.jwk],
+    ['ECDH-ES', KEYS.X25519.jwk],
+    ['Ed25519', KEYS.Ed25519.jwk],
+    ['EdDSA', KEYS.Ed25519.jwk],
+    ['ES256', KEYS.P256.jwk],
+    ['ES384', KEYS.P384.jwk],
+    ['ES512', KEYS.P521.jwk],
+    ['PS256', KEYS.RSA.jwk],
+    ['PS384', KEYS.RSA.jwk],
+    ['PS512', KEYS.RSA.jwk],
+    ['RS256', KEYS.RSA.jwk],
+    ['RS384', KEYS.RSA.jwk],
+    ['RS512', KEYS.RSA.jwk],
+    ['RSA-OAEP-256', KEYS.RSA.jwk],
+    ['RSA-OAEP-384', KEYS.RSA.jwk],
+    ['RSA-OAEP-512', KEYS.RSA.jwk],
+    ['RSA-OAEP', KEYS.RSA.jwk],
+    ['ML-DSA-44', KEYS['ML-DSA-44'].jwk],
+    ['ML-DSA-65', KEYS['ML-DSA-65'].jwk],
+    ['ML-DSA-87', KEYS['ML-DSA-87'].jwk],
   ]
 
   function publicJwk(jwk: JsonWebKey) {
-    const { d, p, q, dp, dq, qi, k, ...result } = jwk
+    const { d, p, q, dp, dq, qi, k, priv, ...result } = jwk
     return result
   }
 
   for (const vector of algorithms.slice()) {
-    if (typeof vector[2] !== 'boolean') {
-      let [pub, priv] = vector[2]
-      vector[2] = priv
-      algorithms.push([vector[0], publicJwk(vector[1]), pub])
-    } else {
-      algorithms.push([vector[0], publicJwk(vector[1]), vector[2]])
-    }
+    algorithms.push([vector[0], publicJwk(vector[1])])
   }
 
-  function title(alg: string, jwk: JsonWebKey, works: boolean) {
+  function title(alg: string, jwk: JsonWebKey, supported = true) {
     let result = ''
-    if (!works) {
+    if (!supported) {
       result = '[not supported] '
     }
     result += `${alg} `
     if (alg === 'EdDSA' || alg === 'ECDH-ES') {
       result += `${jwk.crv} `
     }
-    result += jwk.d ? 'Private' : 'Public'
+    result += jwk.d || jwk.priv ? 'Private' : 'Public'
     result += ' JWK Import'
     return result
   }
 
   for (const vector of algorithms) {
     const [alg, jwk] = vector
-    const [, , works] = vector
-
-    if (typeof works !== 'boolean') {
-      throw new Error()
-    }
 
     const execute = async (t: typeof QUnit.assert) => {
       const key = await lib.importJWK({ ...jwk, ext: true } as jose.JWK, alg)
@@ -99,7 +81,10 @@ export default (
         const nCrypto = globalThis.process.getBuiltinModule('node:crypto')
         t.deepEqual(
           await lib.exportJWK(
-            nCrypto[jwk.d ? 'createPrivateKey' : 'createPublicKey']({ format: 'jwk', key: jwk }),
+            nCrypto[jwk.d || jwk.priv ? 'createPrivateKey' : 'createPublicKey']({
+              format: 'jwk',
+              key: jwk,
+            }),
           ),
           exported,
         )
@@ -108,10 +93,11 @@ export default (
       t.ok(1)
     }
 
-    if (works) {
-      test(title(alg, jwk, works), execute)
+    const op = `${jwk.d || jwk.priv ? 'private' : 'public'} jwk import`
+    if (env.supported(alg, op) && env.supported(jwk.crv, op)) {
+      test(title(alg, jwk), execute)
     } else {
-      test(title(alg, jwk, works), async (t) => {
+      test(title(alg, jwk, false), async (t) => {
         await t.rejects(execute(t))
       })
     }

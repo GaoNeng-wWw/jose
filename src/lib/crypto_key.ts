@@ -1,15 +1,12 @@
 import type * as types from '../types.d.ts'
 
-function unusable(name: string | number, prop = 'algorithm.name') {
-  return new TypeError(`CryptoKey does not support this operation, its ${prop} must be ${name}`)
-}
+const unusable = (name: string | number, prop = 'algorithm.name') =>
+  new TypeError(`CryptoKey does not support this operation, its ${prop} must be ${name}`)
 
-function isAlgorithm<T extends KeyAlgorithm>(
+const isAlgorithm = <T extends KeyAlgorithm>(
   algorithm: KeyAlgorithm,
   name: string,
-): algorithm is T {
-  return algorithm.name === name
-}
+): algorithm is T => algorithm.name === name
 
 function getHashLength(hash: KeyAlgorithm) {
   return parseInt(hash.name.slice(4), 10)
@@ -69,6 +66,12 @@ export function checkSigCryptoKey(key: types.CryptoKey, alg: string, usage: KeyU
     case 'Ed25519': // Fall through
     case 'EdDSA': {
       if (!isAlgorithm(key.algorithm, 'Ed25519')) throw unusable('Ed25519')
+      break
+    }
+    case 'ML-DSA-44': // Fall through
+    case 'ML-DSA-65': // Fall through
+    case 'ML-DSA-87': {
+      if (!isAlgorithm(key.algorithm, alg)) throw unusable(alg)
       break
     }
     case 'ES256':

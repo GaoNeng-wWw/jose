@@ -1,8 +1,9 @@
 {
   "name": "@gaonengwww/jose",
-  "version": "6.0.9",
+  "version": "6.1.0",
   "description": "JWA, JWS, JWE, JWT, JWK, JWKS for Node.js, Browser, Cloudflare Workers, Deno, Bun, and other Web-interoperable runtimes",
   "keywords": [
+    "akp",
     "browser",
     "bun",
     "cloudflare",
@@ -29,8 +30,9 @@
     "jwk",
     "jwks",
     "jws",
-    "jwt",
     "jwt-decode",
+    "jwt",
+    "ml-dsa",
     "netlify",
     "next",
     "nextjs",
@@ -59,338 +61,41 @@
   "license": "MIT",
   "author": "Filip Skokan <panva.ip@gmail.com>",
   "sideEffects": false,
-  "type": "module",
   "imports": {
     "#dist": {
-      "types": {
-        "require": "./dist/webapi/index.d.cts",
-        "import": "./dist/webapi/index.d.ts"
-      },
-      "import": "./dist/webapi/index.js",
-      "require": "./dist/webapi/index.cjs"
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     },
     "#dist/*": {
-      "types": {
-        "require": "./dist/webapi/*.d.cts",
-        "import": "./dist/webapi/*.d.ts"
-      },
-      "import": "./dist/webapi/*.js",
-      "require": "./dist/webapi/*.cjs"
+      "types": "./dist/*.d.ts",
+      "default": "./dist/*.js"
     }
   },
   "exports": {
     ".": {
-      "types": {
-        "import": "./dist/webapi/index.d.ts",
-        "require": "./dist/webapi/index.d.cts",
-        "node": "./dist/webapi/index.d.ts"
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
       },
-      "import": "./dist/webapi/index.js",
-      "require": "./dist/webapi/index.cjs"
-    },
-    "./jwk/embedded": {
-      "types": {
-        "import": "./dist/webapi/jwk/embedded.d.ts",
-        "require": "./dist/webapi/jwk/embedded.d.cts",
-        "node": "./dist/webapi/jwk/embedded.d.ts"
-      },
-      "import": "./dist/webapi/jwk/embedded.js",
-      "require": "./dist/webapi/jwk/embedded.cjs"
-    },
-    "./jwk/thumbprint": {
-      "types": {
-        "import": "./dist/webapi/jwk/thumbprint.d.ts",
-        "require": "./dist/webapi/jwk/thumbprint.d.cts",
-        "node": "./dist/webapi/jwk/thumbprint.d.ts",
-        "type": "./dist/webapi/jwk/thumbprint.d.ts"
-      },
-      "import": "./dist/webapi/jwk/thumbprint.js",
-      "require": "./dist/webapi/jwk/thumbprint.cjs"
-    },
-    "./key/import": {
-      "types": {
-        "import": "./dist/webapi/key/import.d.ts",
-        "require": "./dist/webapi/key/import.d.cts",
-        "node": "./dist/webapi/key/import.d.ts",
-        "type": "./dist/webapi/key/import.d.ts"
-      },
-      "import": "./dist/webapi/key/import.js",
-      "require": "./dist/webapi/key/import.cjs"
-    },
-    "./key/export": {
-      "types": {
-        "import": "./dist/webapi/key/export.d.ts",
-        "require": "./dist/webapi/key/export.d.cts",
-        "node": "./dist/webapi/key/export.d.ts",
-        "type": "./dist/webapi/key/export.d.ts"
-      },
-      "import": "./dist/webapi/key/export.js",
-      "require": "./dist/webapi/key/export.cjs"
-    },
-    "./key/generate/keypair": {
-      "types": {
-        "import": "./dist/webapi/key/generate_key_pair.d.ts",
-        "require": "./dist/webapi/key/generate_key_pair.d.cts",
-        "node": "./dist/webapi/key/generate_key_pair.d.ts",
-        "type": "./dist/webapi/key/generate_key_pair.d.ts"
-      },
-      "import": "./dist/webapi/key/generate_key_pair.js",
-      "require": "./dist/webapi/key/generate_key_pair.cjs"
-    },
-    "./key/generate/secret": {
-      "types": {
-        "import": "./dist/webapi/key/generate_secret.d.ts",
-        "require": "./dist/webapi/key/generate_secret.d.cts",
-        "node": "./dist/webapi/key/generate_secret.d.ts",
-        "type": "./dist/webapi/key/generate_secret.d.ts"
-      },
-      "import": "./dist/webapi/key/generate_secret.js",
-      "require": "./dist/webapi/key/generate_secret.cjs"
-    },
-    "./jwks/remote": {
-      "types": {
-        "import": "./dist/webapi/jwks/remote.d.ts",
-        "require": "./dist/webapi/jwks/remote.d.cts",
-        "node": "./dist/webapi/jwks/remote.d.ts",
-        "type": "./dist/webapi/jwks/remote.d.ts"
-      },
-      "import": "./dist/webapi/jwks/remote.js",
-      "require": "./dist/webapi/jwks/remote.cjs"
-    },
-    "./jwks/local": {
-      "types": {
-        "import": "./dist/webapi/jwks/local.d.ts",
-        "require": "./dist/webapi/jwks/local.d.cts",
-        "node": "./dist/webapi/jwks/local.d.ts",
-        "type": "./dist/webapi/jwks/local.d.ts"
-      },
-      "import": "./dist/webapi/jwks/local.js",
-      "require": "./dist/webapi/jwks/local.cjs"
-    },
-    "./jwt/sign": {
-      "types": {
-        "import": "./dist/webapi/jwt/sign.d.ts",
-        "require": "./dist/webapi/jwt/sign.d.cts",
-        "node": "./dist/webapi/jwt/sign.d.ts",
-        "type": "./dist/webapi/jwt/sign.d.ts"
-      },
-      "import": "./dist/webapi/jwt/sign.js",
-      "require": "./dist/webapi/jwt/sign.cjs"
-    },
-    "./jwt/verify": {
-      "types": {
-        "import": "./dist/webapi/jwt/verify.d.ts",
-        "require": "./dist/webapi/jwt/verify.d.cts",
-        "node": "./dist/webapi/jwt/verify.d.ts",
-        "type": "./dist/webapi/jwt/verify.d.ts"
-      },
-      "import": "./dist/webapi/jwt/verify.js",
-      "require": "./dist/webapi/jwt/verify.cjs"
-    },
-    "./jwt/encrypt": {
-      "types": {
-        "import": "./dist/webapi/jwt/encrypt.d.ts",
-        "require": "./dist/webapi/jwt/encrypt.d.cts",
-        "node": "./dist/webapi/jwt/encrypt.d.ts",
-        "type": "./dist/webapi/jwt/encrypt.d.ts"
-      },
-      "import": "./dist/webapi/jwt/encrypt.js",
-      "require": "./dist/webapi/jwt/encrypt.cjs"
-    },
-    "./jwt/decrypt": {
-      "types": {
-        "import": "./dist/webapi/jwt/decrypt.d.ts",
-        "require": "./dist/webapi/jwt/decrypt.d.cts",
-        "node": "./dist/webapi/jwt/decrypt.d.ts",
-        "type": "./dist/webapi/jwt/decrypt.d.ts"
-      },
-      "import": "./dist/webapi/jwt/decrypt.js",
-      "require": "./dist/webapi/jwt/decrypt.cjs"
-    },
-    "./jwt/unsecured": {
-      "types": {
-        "import": "./dist/webapi/jwt/unsecured.d.ts",
-        "require": "./dist/webapi/jwt/unsecured.d.cts",
-        "node": "./dist/webapi/jwt/unsecured.d.ts",
-        "type": "./dist/webapi/jwt/unsecured.d.ts"
-      },
-      "import": "./dist/webapi/jwt/unsecured.js",
-      "require": "./dist/webapi/jwt/unsecured.cjs"
-    },
-    "./jwt/decode": {
-      "types": {
-        "import": "./dist/webapi/util/decode_jwt.d.ts",
-        "require": "./dist/webapi/util/decode_jwt.d.cts",
-        "node": "./dist/webapi/util/decode_jwt.d.ts",
-        "type": "./dist/webapi/util/decode_jwt.d.ts"
-      },
-      "import": "./dist/webapi/util/decode_jwt.js",
-      "require": "./dist/webapi/util/decode_jwt.cjs"
-    },
-    "./decode/protected_header": {
-      "types": {
-        "import": "./dist/webapi/util/decode_protected_header.d.ts",
-        "require": "./dist/webapi/util/decode_protected_header.d.cts",
-        "node": "./dist/webapi/util/decode_protected_header.d.ts",
-        "type": "./dist/webapi/util/decode_protected_header.d.ts"
-      },
-      "import": "./dist/webapi/util/decode_protected_header.js",
-      "require": "./dist/webapi/util/decode_protected_header.cjs"
-    },
-    "./jws/compact/sign": {
-      "types": {
-        "import": "./dist/webapi/jws/compact/sign.d.ts",
-        "require": "./dist/webapi/jws/compact/sign.d.cts",
-        "node": "./dist/webapi/jws/compact/sign.d.ts",
-        "type": "./dist/webapi/jws/compact/sign.d.ts"
-      },
-      "import": "./dist/webapi/jws/compact/sign.js",
-      "require": "./dist/webapi/jws/compact/sign.cjs"
-    },
-    "./jws/compact/verify": {
-      "types": {
-        "import": "./dist/webapi/jws/compact/verify.d.ts",
-        "require": "./dist/webapi/jws/compact/verify.d.cts",
-        "node": "./dist/webapi/jws/compact/verify.d.ts",
-        "type": "./dist/webapi/jws/compact/verify.d.ts"
-      },
-      "import": "./dist/webapi/jws/compact/verify.js",
-      "require": "./dist/webapi/jws/compact/verify.cjs"
-    },
-    "./jws/flattened/sign": {
-      "types": {
-        "import": "./dist/webapi/jws/flattened/sign.d.ts",
-        "require": "./dist/webapi/jws/flattened/sign.d.cts",
-        "node": "./dist/webapi/jws/flattened/sign.d.ts",
-        "type": "./dist/webapi/jws/flattened/sign.d.ts"
-      },
-      "import": "./dist/webapi/jws/flattened/sign.js",
-      "require": "./dist/webapi/jws/flattened/sign.cjs"
-    },
-    "./jws/flattened/verify": {
-      "types": {
-        "import": "./dist/webapi/jws/flattened/verify.d.ts",
-        "require": "./dist/webapi/jws/flattened/verify.d.cts",
-        "node": "./dist/webapi/jws/flattened/verify.d.ts",
-        "type": "./dist/webapi/jws/flattened/verify.d.ts"
-      },
-      "import": "./dist/webapi/jws/flattened/verify.js",
-      "require": "./dist/webapi/jws/flattened/verify.cjs"
-    },
-    "./jws/general/sign": {
-      "types": {
-        "import": "./dist/webapi/jws/general/sign.d.ts",
-        "require": "./dist/webapi/jws/general/sign.d.cts",
-        "node": "./dist/webapi/jws/general/sign.d.ts",
-        "type": "./dist/webapi/jws/general/sign.d.ts"
-      },
-      "import": "./dist/webapi/jws/general/sign.js",
-      "require": "./dist/webapi/jws/general/sign.cjs"
-    },
-    "./jws/general/verify": {
-      "types": {
-        "import": "./dist/webapi/jws/general/verify.d.ts",
-        "require": "./dist/webapi/jws/general/verify.d.cts",
-        "node": "./dist/webapi/jws/general/verify.d.ts",
-        "type": "./dist/webapi/jws/general/verify.d.ts"
-      },
-      "import": "./dist/webapi/jws/general/verify.js",
-      "require": "./dist/webapi/jws/general/verify.cjs"
-    },
-    "./jwe/compact/encrypt": {
-      "types": {
-        "import": "./dist/webapi/jwe/compact/encrypt.d.ts",
-        "require": "./dist/webapi/jwe/compact/encrypt.d.cts",
-        "node": "./dist/webapi/jwe/compact/encrypt.d.ts",
-        "type": "./dist/webapi/jwe/compact/encrypt.d.ts"
-      },
-      "import": "./dist/webapi/jwe/compact/encrypt.js",
-      "require": "./dist/webapi/jwe/compact/encrypt.cjs"
-    },
-    "./jwe/compact/decrypt": {
-      "types": {
-        "import": "./dist/webapi/jwe/compact/decrypt.d.ts",
-        "require": "./dist/webapi/jwe/compact/decrypt.d.cts",
-        "node": "./dist/webapi/jwe/compact/decrypt.d.ts",
-        "type": "./dist/webapi/jwe/compact/decrypt.d.ts"
-      },
-      "import": "./dist/webapi/jwe/compact/decrypt.js",
-      "require": "./dist/webapi/jwe/compact/decrypt.cjs"
-    },
-    "./jwe/flattened/encrypt": {
-      "types": {
-        "import": "./dist/webapi/jwe/flattened/encrypt.d.ts",
-        "require": "./dist/webapi/jwe/flattened/encrypt.d.cts",
-        "node": "./dist/webapi/jwe/flattened/encrypt.d.ts",
-        "type": "./dist/webapi/jwe/flattened/encrypt.d.ts"
-      },
-      "import": "./dist/webapi/jwe/flattened/encrypt.js",
-      "require": "./dist/webapi/jwe/flattened/encrypt.cjs"
-    },
-    "./jwe/flattened/decrypt": {
-      "types": {
-        "import": "./dist/webapi/jwe/flattened/decrypt.d.ts",
-        "require": "./dist/webapi/jwe/flattened/decrypt.d.cts",
-        "node": "./dist/webapi/jwe/flattened/decrypt.d.ts",
-        "type": "./dist/webapi/jwe/flattened/decrypt.d.ts"
-      },
-      "import": "./dist/webapi/jwe/flattened/decrypt.js",
-      "require": "./dist/webapi/jwe/flattened/decrypt.cjs"
-    },
-    "./jwe/general/encrypt": {
-      "types": {
-        "import": "./dist/webapi/jwe/general/encrypt.d.ts",
-        "require": "./dist/webapi/jwe/general/encrypt.d.cts",
-        "node": "./dist/webapi/jwe/general/encrypt.d.ts",
-        "type": "./dist/webapi/jwe/general/encrypt.d.ts"
-      },
-      "import": "./dist/webapi/jwe/general/encrypt.js",
-      "require": "./dist/webapi/jwe/general/encrypt.cjs"
-    },
-    "./jwe/general/decrypt": {
-      "types": {
-        "import": "./dist/webapi/jwe/general/decrypt.d.ts",
-        "require": "./dist/webapi/jwe/general/decrypt.d.cts",
-        "node": "./dist/webapi/jwe/general/decrypt.d.ts",
-        "type": "./dist/webapi/jwe/general/decrypt.d.ts"
-      },
-      "import": "./dist/webapi/jwe/general/decrypt.js",
-      "require": "./dist/webapi/jwe/general/decrypt.cjs"
-    },
-    "./errors": {
-      "types": {
-        "import": "./dist/webapi/util/errors.d.ts",
-        "require": "./dist/webapi/util/errors.d.cts",
-        "node": "./dist/webapi/util/errors.d.ts",
-        "type": "./dist/webapi/util/errors.d.ts"
-      },
-      "import": "./dist/webapi/util/errors.js",
-      "require": "./dist/webapi/util/errors.cjs"
-    },
-    "./base64url": {
-      "types": {
-        "import": "./dist/webapi/util/base64url.d.ts",
-        "require": "./dist/webapi/util/base64url.d.cts",
-        "node": "./dist/webapi/util/base64url.d.ts",
-        "type": "./dist/webapi/util/base64url.d.ts"
-      },
-      "import": "./dist/webapi/util/base64url.js",
-      "require": "./dist/webapi/util/base64url.cjs"
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      }
     },
     "./package.json": "./package.json"
   },
-  "main": "./dist/webapi/index.js",
-  "types": "./dist/webapi/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "files": [
-    "dist/webapi/**/*"
+    "dist"
   ],
   "scripts": {
-    "build": "tsup",
-    "lint:package": "publint",
+    "build": "tsdown",
     "build-all": "run-s clear build build:*",
-    "build:bundle": "esbuild --bundle dist/webapi/index.js --format=esm --target=es2022 --outfile=dist/webapi/index.bundle.js",
-    "build:bundle-min": "esbuild --minify --bundle dist/webapi/index.js --format=esm --target=es2022 --outfile=dist/webapi/index.bundle.min.js",
-    "build:umd": "rollup dist/webapi/index.bundle.js --format umd --name jose -o dist/webapi/index.umd.js && rollup dist/webapi/index.bundle.min.js --compact --format umd --name jose -o dist/webapi/index.umd.min.js",
+    "build:bundle": "esbuild --bundle dist/index.js --format=esm --target=es2022 --outfile=dist/index.bundle.js",
+    "build:bundle-min": "esbuild --minify --bundle dist/index.js --format=esm --target=es2022 --outfile=dist/index.bundle.min.js",
+    "build:umd": "rollup dist/index.bundle.js --format umd --name jose -o dist/index.umd.js && rollup dist/index.bundle.min.js --compact --format umd --name jose -o dist/index.umd.min.js",
     "build:deno": "mkdir -p dist/deno && cp -R src/. dist/deno && find dist/deno -name '*.ts' -type f -print0 | xargs -0 sed -i.bak -e \"s/\\.js'/.ts'/g\" && npm run sedcleanup",
     "build:types": "npm run build -- -p ./tsconfig/types.json && cd src && find . -name '*.d.ts' -maxdepth 2 -type f -exec rsync -R \"{}\" ../dist/webapi  \\;",
     "build:jsr": "npx --yes jsr publish --dry-run --allow-dirty",
@@ -409,28 +114,28 @@
     "tap:workerd": "./tap/.workerd.sh"
   },
   "devDependencies": {
-    "@types/node": "^22.13.10",
-    "@types/qunit": "^2.19.12",
-    "ava": "^6.2.0",
-    "edge-runtime": "^4.0.1",
-    "esbuild": "^0.25.1",
-    "glob": "^11.0.1",
-    "npm-run-all2": "^7.0.2",
+    "@arethetypeswrong/core": "^0.18.2",
+    "@types/node": "^22.18.0",
+    "@types/qunit": "^2.19.13",
+    "ava": "^6.4.1",
+    "esbuild": "^0.25.9",
+    "glob": "^11.0.3",
+    "npm-run-all2": "^8.0.4",
     "patch-package": "^8.0.0",
-    "prettier": "^3.5.3",
-    "prettier-plugin-jsdoc": "^1.3.2",
-    "publint": "^0.3.9",
+    "prettier": "^3.6.2",
+    "prettier-plugin-jsdoc": "^1.3.3",
     "qunit": "^2.24.1",
-    "rimraf": "^6.0.1",
-    "rollup": "^4.35.0",
+    "rollup": "^4.49.0",
     "tar": "^7.4.3",
     "timekeeper": "^2.3.1",
-    "tsup": "^8.4.0",
-    "tsx": "^4.19.3",
-    "typedoc": "0.27.9",
-    "typedoc-plugin-markdown": "4.3.1",
-    "typedoc-plugin-mdn-links": "4.0.3",
-    "typescript": "^5.8.2",
-    "undici": "^6.21.1"
+    "tsx": "^4.20.5",
+    "typedoc": "^0.28.11",
+    "typedoc-plugin-markdown": "^4.8.1",
+    "typedoc-plugin-mdn-links": "^5.0.9",
+    "typescript": "^5.9.2",
+    "undici": "^6.21.3"
+  },
+  "dependencies": {
+    "tsdown": "^0.15.0"
   }
 }

@@ -24,11 +24,11 @@ console.log(jwe)
 
 ## Constructors
 
-### new FlattenedEncrypt()
+### Constructor
 
-▸ **new FlattenedEncrypt**(`plaintext`): [`FlattenedEncrypt`](FlattenedEncrypt.md)
+▸ **new FlattenedEncrypt**(`plaintext`): `FlattenedEncrypt`
 
-[FlattenedEncrypt](FlattenedEncrypt.md) constructor
+FlattenedEncrypt constructor
 
 #### Parameters
 
@@ -38,13 +38,13 @@ console.log(jwe)
 
 #### Returns
 
-[`FlattenedEncrypt`](FlattenedEncrypt.md)
+`FlattenedEncrypt`
 
 ## Methods
 
 ### encrypt()
 
-▸ **encrypt**(`key`, `options`?): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)\<[`FlattenedJWE`](../../../../types/interfaces/FlattenedJWE.md)\>
+▸ **encrypt**(`key`, `options?`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)\<[`FlattenedJWE`](../../../../types/interfaces/FlattenedJWE.md)\>
 
 Encrypts and resolves the value of the Flattened JWE object.
 
@@ -53,7 +53,7 @@ Encrypts and resolves the value of the Flattened JWE object.
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `key` | [`Uint8Array`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) \| [`CryptoKey`](https://developer.mozilla.org/docs/Web/API/CryptoKey) \| [`JWK`](../../../../types/interfaces/JWK.md) \| [`KeyObject`](../../../../types/interfaces/KeyObject.md) | Public Key or Secret to encrypt the JWE with. See [Algorithm Key Requirements](https://github.com/panva/jose/issues/210#jwe-alg). |
-| `options`? | [`EncryptOptions`](../../../../types/interfaces/EncryptOptions.md) | JWE Encryption options. |
+| `options?` | [`EncryptOptions`](../../../../types/interfaces/EncryptOptions.md) | JWE Encryption options. |
 
 #### Returns
 
@@ -132,9 +132,9 @@ You should not use this method. It is only really intended for test and vector
 ▸ **setKeyManagementParameters**(`parameters`): `this`
 
 Sets the JWE Key Management parameters to be used when encrypting. Use of this is method is
-really only needed for ECDH based algorithms when utilizing the Agreement PartyUInfo or
-Agreement PartyVInfo parameters. Other parameters will always be randomly generated when needed
-and missing.
+really only needed for ECDH based algorithms when utilizing the "apu" (Agreement PartyUInfo) or
+"apv" (Agreement PartyVInfo) parameters. Other parameters will always be randomly generated
+when needed and missing.
 
 #### Parameters
 

@@ -4,7 +4,7 @@
 
 Support from the community to continue maintaining and improving this module is welcome. If you find the module useful, please consider supporting the project by [becoming a sponsor](https://github.com/sponsors/panva).
 
-▸ **createLocalJWKSet**(`jwks`): (`protectedHeader`?, `token`?) => [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)\<[`CryptoKey`](https://developer.mozilla.org/docs/Web/API/CryptoKey)\>
+▸ **createLocalJWKSet**(`jwks`): (`protectedHeader?`, `token?`) => [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)\<[`CryptoKey`](https://developer.mozilla.org/docs/Web/API/CryptoKey)\>
 
 Returns a function that resolves a JWS JOSE Header to a public key object from a locally stored,
 or otherwise available, JSON Web Key Set.
@@ -18,8 +18,9 @@ Only a single public key must match the selection process. As shown in the examp
 multiple keys get matched it is possible to opt-in to iterate over the matched keys and attempt
 verification in an iterative manner.
 
-Note: The function's purpose is to resolve public keys used for verifying signatures and will not
-work for public encryption keys.
+> [!NOTE]\
+> The function's purpose is to resolve public keys used for verifying signatures and will not work
+> for public encryption keys.
 
 This function is exported (as a named export) from the main `'jose'` module entry point as well
 as from its subpath export `'jose/jwks/local'`.
@@ -32,14 +33,14 @@ as from its subpath export `'jose/jwks/local'`.
 
 ## Returns
 
-`Function`
+▸ (`protectedHeader?`, `token?`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)\<[`CryptoKey`](https://developer.mozilla.org/docs/Web/API/CryptoKey)\>
 
 ### Parameters
 
 | Parameter | Type |
 | ------ | ------ |
-| `protectedHeader`? | [`JWSHeaderParameters`](../../../types/interfaces/JWSHeaderParameters.md) |
-| `token`? | [`FlattenedJWSInput`](../../../types/interfaces/FlattenedJWSInput.md) |
+| `protectedHeader?` | [`JWSHeaderParameters`](../../../types/interfaces/JWSHeaderParameters.md) |
+| `token?` | [`FlattenedJWSInput`](../../../types/interfaces/FlattenedJWSInput.md) |
 
 ### Returns
 

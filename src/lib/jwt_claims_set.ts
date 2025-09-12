@@ -1,10 +1,76 @@
 import type * as types from '../types.d.ts'
 import { JWTClaimValidationFailed, JWTExpired, JWTInvalid } from '../util/errors.js'
 import { decoder } from './buffer_utils.js'
-import epoch from './epoch.js'
-import secs from './secs.js'
-import isObject from './is_object.js'
+import { isObject } from './is_object.js'
 import { encoder } from './buffer_utils.js'
+
+const epoch = (date: Date) => Math.floor(date.getTime() / 1000)
+
+const minute = 60
+const hour = minute * 60
+const day = hour * 24
+const week = day * 7
+const year = day * 365.25
+
+const REGEX =
+  /^(\+|\-)? ?(\d+|\d+\.\d+) ?(seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)(?: (ago|from now))?$/i
+
+export function secs(str: string): number {
+  const matched = REGEX.exec(str)
+
+  if (!matched || (matched[4] && matched[1])) {
+    throw new TypeError('Invalid time period format')
+  }
+
+  const value = parseFloat(matched[2])
+  const unit = matched[3].toLowerCase()
+
+  let numericDate: number
+
+  switch (unit) {
+    case 'sec':
+    case 'secs':
+    case 'second':
+    case 'seconds':
+    case 's':
+      numericDate = Math.round(value)
+      break
+    case 'minute':
+    case 'minutes':
+    case 'min':
+    case 'mins':
+    case 'm':
+      numericDate = Math.round(value * minute)
+      break
+    case 'hour':
+    case 'hours':
+    case 'hr':
+    case 'hrs':
+    case 'h':
+      numericDate = Math.round(value * hour)
+      break
+    case 'day':
+    case 'days':
+    case 'd':
+      numericDate = Math.round(value * day)
+      break
+    case 'week':
+    case 'weeks':
+    case 'w':
+      numericDate = Math.round(value * week)
+      break
+    // years matched
+    default:
+      numericDate = Math.round(value * year)
+      break
+  }
+
+  if (matched[1] === '-' || matched[4] === 'ago') {
+    return -numericDate
+  }
+
+  return numericDate
+}
 
 function validateInput(label: string, input: number) {
   if (!Number.isFinite(input)) {
@@ -14,7 +80,13 @@ function validateInput(label: string, input: number) {
   return input
 }
 
-const normalizeTyp = (value: string) => value.toLowerCase().replace(/^application\//, '')
+const normalizeTyp = (value: string) => {
+  if (value.includes('/')) {
+    return value.toLowerCase()
+  }
+
+  return `application/${value.toLowerCase()}`
+}
 
 const checkAudiencePresence = (audPayload: unknown, audOption: unknown[]) => {
   if (typeof audPayload === 'string') {
@@ -159,7 +231,7 @@ export function validateClaimsSet(
   }
 
   if (maxTokenAge) {
-    const age = now - payload.iat!
+    const age = now - (payload.iat as number)
     const max = typeof maxTokenAge === 'number' ? maxTokenAge : secs(maxTokenAge)
 
     if (age - tolerance > max) {
@@ -222,16 +294,8 @@ export class JWTClaimsBuilder {
     this.#payload.aud = value
   }
 
-  get jti(): string | undefined {
-    return this.#payload.jti
-  }
-
   set jti(value: string) {
     this.#payload.jti = value
-  }
-
-  get nbf(): number | undefined {
-    return this.#payload.nbf
   }
 
   set nbf(value: number | string | Date) {
@@ -244,10 +308,6 @@ export class JWTClaimsBuilder {
     }
   }
 
-  get exp(): number | undefined {
-    return this.#payload.exp
-  }
-
   set exp(value: number | string | Date) {
     if (typeof value === 'number') {
       this.#payload.exp = validateInput('setExpirationTime', value)
@@ -256,10 +316,6 @@ export class JWTClaimsBuilder {
     } else {
       this.#payload.exp = epoch(new Date()) + secs(value)
     }
-  }
-
-  get iat(): number | undefined {
-    return this.#payload.iat
   }
 
   set iat(value: number | string | Date | undefined) {

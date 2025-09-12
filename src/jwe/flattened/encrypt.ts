@@ -6,15 +6,15 @@
 
 import { encode as b64u } from '../../util/base64url.js'
 import { unprotected } from '../../lib/private_symbols.js'
-import encrypt from '../../lib/encrypt.js'
+import { encrypt } from '../../lib/encrypt.js'
 import type * as types from '../../types.d.ts'
-import encryptKeyManagement from '../../lib/encrypt_key_management.js'
+import { encryptKeyManagement } from '../../lib/encrypt_key_management.js'
 import { JOSENotSupported, JWEInvalid } from '../../util/errors.js'
-import isDisjoint from '../../lib/is_disjoint.js'
+import { isDisjoint } from '../../lib/is_disjoint.js'
 import { encoder, decoder, concat } from '../../lib/buffer_utils.js'
-import validateCrit from '../../lib/validate_crit.js'
-import normalizeKey from '../../lib/normalize_key.js'
-import checkKeyType from '../../lib/check_key_type.js'
+import { validateCrit } from '../../lib/validate_crit.js'
+import { normalizeKey } from '../../lib/normalize_key.js'
+import { checkKeyType } from '../../lib/check_key_type.js'
 
 /**
  * The FlattenedEncrypt class is used to build and encrypt Flattened JWE objects.
@@ -66,9 +66,9 @@ export class FlattenedEncrypt {
 
   /**
    * Sets the JWE Key Management parameters to be used when encrypting. Use of this is method is
-   * really only needed for ECDH based algorithms when utilizing the Agreement PartyUInfo or
-   * Agreement PartyVInfo parameters. Other parameters will always be randomly generated when needed
-   * and missing.
+   * really only needed for ECDH based algorithms when utilizing the "apu" (Agreement PartyUInfo) or
+   * "apv" (Agreement PartyVInfo) parameters. Other parameters will always be randomly generated
+   * when needed and missing.
    *
    * @param parameters JWE Key Management parameters.
    */

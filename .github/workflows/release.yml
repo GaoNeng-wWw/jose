@@ -24,8 +24,6 @@ jobs:
           registry-url: https://registry.npmjs.org
           always-auth: true
       - run: npm i && npm run build
-      - name: Prepare distribution
-        run: node tools/publish.cjs
       - run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
